@@ -8,7 +8,7 @@ export interface IUser extends Document {
   profilePic?: string;
   status?: string;
   groups: mongoose.Types.ObjectId[];
-  lastSchene: Date;
+  lastSeen: Date;
   isOnline: boolean;
   socketId: string;
   refreshToken: string;
@@ -54,7 +54,7 @@ const userSchema = new mongoose.Schema(
         ref: "Group",
       },
     ],
-    lastSchene: {
+    lastSeen: {
       type: Date,
       default: Date.now,
     },
