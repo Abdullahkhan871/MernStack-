@@ -1,16 +1,8 @@
-import mongoose, { Document, Schema, model } from "mongoose";
+import mongoose from "mongoose";
 
-export interface IGroup extends Document {
-  name: string;
-  description?: string;
-  isAdmin: mongoose.Types.ObjectId[];
-  members: mongoose.Types.ObjectId[];
-  groupImage: string;
-  messages: mongoose.Types.ObjectId[];
-  lastMessage: mongoose.Types.ObjectId;
-}
+const { Schema, model } = mongoose;
 
-const groupSchema = new Schema<IGroup>(
+const groupSchema = new Schema(
   {
     name: {
       type: String,
@@ -55,5 +47,6 @@ const groupSchema = new Schema<IGroup>(
   }
 );
 
-const Group = model<IGroup>("Group", groupSchema);
+const Group = model("Group", groupSchema);
+
 export { Group };

@@ -1,22 +1,8 @@
-import mongoose, { Document, Schema, model } from "mongoose";
+import mongoose from "mongoose";
 
-export interface IUser extends Document {
-  name: string;
-  email: string;
-  phone?: string;
-  password: string;
-  profilePic?: string;
-  status?: string;
-  groups: mongoose.Types.ObjectId[];
-  lastSeen: Date;
-  isOnline: boolean;
-  socketId: string;
-  refreshToken: string;
-  createdAt?: Date;
-  updatedAt?: Date;
-}
+const { Schema, model } = mongoose;
 
-const userSchema = new mongoose.Schema(
+const userSchema = new Schema(
   {
     name: {
       type: String,
@@ -44,7 +30,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
-    status: {
+    aboutMe: {
       type: String,
       default: "Hey there I am using Whatsapp",
     },
@@ -76,6 +62,6 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-const User = model<IUser>("User", userSchema);
+const User = model("User", userSchema);
 
 export { User };
