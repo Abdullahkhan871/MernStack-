@@ -5,6 +5,7 @@ import { User } from "../models/user.model.js";
 import { generateAccessToken, generateRefreshToken } from "../utils/jwtUtils.js";
 import { dataUri } from "../middleware/multer.middleware.js";
 import { v2 as cloudinary } from 'cloudinary';
+import nodemailer from "nodemailer";
 
 const signUp = async (req, res) => {
   try {
@@ -120,7 +121,34 @@ const logout = async (req, res) => {
   }
 };
 
-const forgetPassword = () => { };
+const forgetPassword = async (req, res) => {
+  try {
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    const mailOptions = {
+      from: "Chat App",
+      to: "akhan283785@gmail.com",
+      subject: "Test",
+      text: "test 123456",
+    };
+    console.log("EMAIL_USER:", process.env.EMAIL_USER);
+    console.log("EMAIL_PASS:", process.env.EMAIL_PASS ? "✔" : "❌ not set");
+    const mail = await transporter.sendMail(mailOptions);
+    console.log(mail);
+    return customeResponse(res, "successful", 200, {
+      mail
+    })
+  } catch (error) {
+    return customeResponse(res, error, 500)
+  }
+};
+
 const verifyEmail = () => { };
 
 const addPhone = async (req, res) => {
@@ -160,7 +188,7 @@ const addProfilePic = async (req, res) => {
   try {
     const { userId } = req.user;
     if (!req.file) {
-      return res.status(400).json({ message: "No file uploaded" });
+      return customeResponse(res, "No file uploaded", 400,)
     }
     const file = dataUri(req.file).content;
 
@@ -176,16 +204,13 @@ const addProfilePic = async (req, res) => {
     );
 
     if (!updatedUser) {
-      return res.status(404).json({ message: "User not found", user: userId });
+      return customeResponse(res, "User not found", 404,)
     }
-
-    res.status(200).json({
-      message: "Profile picture updated",
+    return customeResponse(res, "Profile picture updated", 200, {
       profilePic: updatedUser.profilePic,
-    });
-
+    })
   } catch (err) {
-    res.status(500).json({ message: `${err}`, error: err.message });
+    return customeResponse(res, `${err}`, 500)
   }
 };
 

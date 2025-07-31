@@ -19,9 +19,9 @@ authRouter.post("/login", login);
 authRouter.post("/logout", authMiddleware, logout);
 authRouter.post("/add-about-me", authMiddleware, addAboutMe);
 authRouter.post("/add-mobile-number", authMiddleware, addPhone);
-
 authRouter.post("/add-profile-pic", authMiddleware, multerUploads, addProfilePic);
+
 authRouter.post("/forget-password", forgetPassword);
-authRouter.post("/forget-password", verifyEmail);
+authRouter.post("/verify-email", verifyEmail);
 
 export { authRouter };
